@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SketchyRecall</string>
+    <string name="start">Start</string>
+    <string name="rules">Rules</string>
+    <string name="rules_title">How to Play SketchyRecall:</string>
+    <string name="rules_p">"Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  "</string>
+    <string name="back">Back</string>
+    <string name="image">A random AI generated image for participants to try to draw.</string>
+    <string name="placeholder_timer">0:12 seconds</string>
+    <string name="placeholder_x">x</string>
+    <string name="reveal">Reveal Image</string>
+    <string name="again">Play Again</string>
+    <string name="study">Study</string>
+    <string name="draw">Draw</string>
+    <string name="times_up">Time\'s Up!</string>
+    <string name="back_button">return to homepage</string>
+</resources>
