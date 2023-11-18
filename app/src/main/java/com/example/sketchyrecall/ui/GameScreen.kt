@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.sketchyrecall.R
 import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
 
@@ -93,13 +96,18 @@ fun timerText(timeRemaining: Int) : String {
 
 @Composable
 fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Spacer(modifier = Modifier.height(100.dp))
         Image(
             painter = painterResource(R.drawable.placeholder),
             contentDescription = stringResource(R.string.image)
         )
         Text(
+            modifier = Modifier.padding(20.dp),
             text = timerText
         )
     }
@@ -107,11 +115,17 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.height(100.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = timerText
+            text = timerText,
+            fontSize = 40.sp
         )
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
@@ -122,8 +136,12 @@ fun TimesUp(
 ) {
     var toReveal by remember { mutableStateOf( false ) }
 
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.height(100.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
                 toReveal = true
@@ -133,6 +151,7 @@ fun TimesUp(
                 text = stringResource(R.string.reveal)
             )
         }
+        Spacer(modifier = Modifier.weight(1f))
     }
 
     if (toReveal) {
@@ -147,19 +166,24 @@ fun Reveal(
 ) {
     var toGame by remember { mutableStateOf( false ) }
 
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Spacer(modifier = Modifier.height(100.dp))
         Image(
             painter = painterResource(R.drawable.placeholder),
             contentDescription = stringResource(R.string.image)
         )
         Button(
+            modifier = Modifier.padding(20.dp),
             onClick = {
                 toGame = true
             }
         ) {
             Text(
-                text = stringResource(R.string.again)
+                text = stringResource(R.string.again),
             )
         }
     }
@@ -189,7 +213,9 @@ fun DrawPreview() {
 @Composable
 fun TimesUpPreview() {
     SketchyRecallTheme {
-//        TimesUp()
+        TimesUp(
+            {}
+        )
     }
 }
 
@@ -197,6 +223,8 @@ fun TimesUpPreview() {
 @Composable
 fun RevealUpPreview() {
     SketchyRecallTheme {
-//        Reveal()
+        Reveal(
+            {}
+        )
     }
 }

@@ -1,8 +1,9 @@
 package com.example.sketchyrecall.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,8 +22,13 @@ fun LandingScreen(
     onStartButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.height(100.dp))
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier
+            .padding(30.dp)
+            .fillMaxSize()
+    ) {
         Button (
             onClick = {
                 onStartButtonClicked()
@@ -33,7 +39,6 @@ fun LandingScreen(
                 fontSize = 24.sp
             )
         }
-        Spacer(modifier = Modifier.height(40.dp))
         Button (
             onClick = {
                 onRulesButtonClicked()
@@ -41,7 +46,8 @@ fun LandingScreen(
         ) {
             Text(
                 text = stringResource(R.string.rules),
-                fontSize = 24.sp)
+                fontSize = 24.sp
+            )
         }
     }
 }
