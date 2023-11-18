@@ -15,6 +15,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
@@ -22,8 +25,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.sketchyrecall.ui.GameStart
 import com.example.sketchyrecall.ui.LandingScreen
+import com.example.sketchyrecall.ui.Reveal
 import com.example.sketchyrecall.ui.RulesScreen
+import com.example.sketchyrecall.ui.TimesUp
 
 enum class SketchyRecallScreen(@StringRes val title: Int) {
     Landing(title = R.string.app_name),
@@ -89,6 +95,9 @@ fun SketchyRecallApp(
                     onRulesButtonClicked = {
                         navController.navigate(SketchyRecallScreen.Rules.name)
                     },
+                    onStartButtonClicked = {
+                        navController.navigate(SketchyRecallScreen.Game.name)
+                    },
                     modifier = Modifier
                         .fillMaxSize()
                 )
@@ -98,6 +107,34 @@ fun SketchyRecallApp(
                     modifier = Modifier
                         .fillMaxSize()
                 )
+            }
+            composable(route = SketchyRecallScreen.Game.name) {
+                var callTimesUp by remember { mutableStateOf( false ) }
+                var callReveal by remember { mutableStateOf( false ) }
+                GameStart(
+                    onTimesUp = {
+                        callTimesUp = true
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()
+
+                )
+
+                if (callTimesUp) {
+                    TimesUp(
+                        onRevealButtonClicked = {
+                            callReveal = true
+                        }
+                    )
+                }
+
+                if (callReveal) {
+                    Reveal(
+                        onPlayAgainButtonClicked = {
+                            navController.navigate(SketchyRecallScreen.Game.name)
+                        }
+                    )
+                }
             }
         }
 

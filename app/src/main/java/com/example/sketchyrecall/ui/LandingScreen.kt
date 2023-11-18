@@ -18,11 +18,15 @@ import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
 @Composable
 fun LandingScreen(
     onRulesButtonClicked: () -> Unit,
+    onStartButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(modifier = Modifier.height(100.dp))
         Button (
-            onClick = {}
+            onClick = {
+                onStartButtonClicked()
+            }
         ) {
             Text(
                 text = stringResource(R.string.start),
@@ -47,7 +51,8 @@ fun LandingScreen(
 fun LandingPreview() {
     SketchyRecallTheme {
         LandingScreen(
-            onRulesButtonClicked = {}
+            onRulesButtonClicked = {},
+            onStartButtonClicked = {}
         )
     }
 }

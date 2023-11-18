@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">SketchyRecall</string>
+    <string name="app_name">Welcome to SketchyRecall</string>
     <string name="start">Start</string>
-    <string name="rules">Rules</string>
+    <string name="rules">SketchyRecall Rules</string>
     <string name="rules_title">How to Play SketchyRecall:</string>
     <string name="rules_p">"Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  Several Paragraphs Long of text explanation.  "</string>
     <string name="back">Back</string>
@@ -14,5 +14,5 @@
     <string name="draw">Draw</string>
     <string name="times_up">Time\'s Up!</string>
     <string name="back_button">return to homepage</string>
-    <string name="game">game</string>
+    <string name="game">SketchyRecall</string>
 </resources>
