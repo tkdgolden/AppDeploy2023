@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sketchyrecall.R
 import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
+import java.util.Timer
+import kotlin.concurrent.timerTask
 
 const val studyTime = 3
 const val drawTime = 5
@@ -191,6 +193,11 @@ fun reveal(
     Log.d("TAG", "reveal func")
 
     var toGame by remember { mutableStateOf( false ) }
+    var ready by remember { mutableStateOf( false ) }
+
+    Timer().schedule(timerTask {
+        ready = true
+    }, pretendAPIWait)
 
     Column(
         modifier = Modifier
@@ -206,15 +213,26 @@ fun reveal(
             painter = painterResource(R.drawable.placeholder),
             contentDescription = stringResource(R.string.image)
         )
-        Button(
-            modifier = Modifier.padding(20.dp),
-            onClick = {
-                toGame = true
+        if (ready) {
+            Button(
+                modifier = Modifier.padding(20.dp),
+                onClick = {
+                    toGame = true
+                }
+            ) {
+                Text(
+                    text = stringResource(R.string.again),
+                )
             }
-        ) {
-            Text(
-                text = stringResource(R.string.again),
-            )
+        } else {
+            Button(
+                modifier = Modifier.padding(20.dp),
+                onClick = {}
+            ) {
+                Text(
+                    text = stringResource(R.string.waiting),
+                )
+            }
         }
     }
 
