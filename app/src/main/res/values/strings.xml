@@ -16,4 +16,10 @@
     <string name="back_button">return to homepage</string>
     <string name="game">SketchyRecall</string>
     <string name="rules_button">Rules</string>
+    <string name="zero_timer_text">0 seconds left</string>
+    <string name="timer_text">Remaining Seconds</string>
+    <string name="study_rules">You have 30 seconds to study the image before you are allowed to describe it.</string>
+    <string name="draw_rules">You have 2.5 minutes to describe the image to the drawers, while they draw.</string>
+    <string name="times_up_rules">After the Describer has marked their choice, Click the button below.</string>
+    <string name="reveal_rules">"Drawers look at the image and vote for which drawing is most accurate.  "</string>
 </resources>

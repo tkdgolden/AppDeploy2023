@@ -31,14 +31,14 @@ const val drawTime = 5
 
 @Composable
 fun GameStart(
-    onTimesUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var phase by remember { mutableIntStateOf(1) }
     when (phase) {
         1 -> phase = study()
         2 -> phase = draw()
-        3 -> onTimesUp()
+        3 -> phase = timesUp()
+        4 -> phase = reveal()
     }
 }
 
@@ -102,6 +102,10 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(100.dp))
+        Text(
+            text = stringResource(R.string.study_rules),
+            modifier = Modifier.padding(20.dp)
+        )
         Image(
             painter = painterResource(R.drawable.placeholder),
             contentDescription = stringResource(R.string.image)
@@ -120,6 +124,11 @@ fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(100.dp))
+        Text(
+            text = stringResource(R.string.draw_rules),
+            modifier = Modifier.padding(20.dp)
+        )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = timerText,
@@ -130,10 +139,9 @@ fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TimesUp(
-    onRevealButtonClicked: () -> Unit,
+fun timesUp(
     modifier: Modifier = Modifier
-) {
+) : Int {
     var toReveal by remember { mutableStateOf( false ) }
 
     Column(
@@ -141,6 +149,11 @@ fun TimesUp(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(100.dp))
+        Text(
+            text = stringResource(R.string.times_up_rules),
+            modifier = Modifier.padding(20.dp)
+        )
         Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
@@ -155,15 +168,15 @@ fun TimesUp(
     }
 
     if (toReveal) {
-        onRevealButtonClicked()
+        return 4
     }
+    return 3
 }
 
 @Composable
-fun Reveal(
-    onPlayAgainButtonClicked: () -> Unit,
+fun reveal(
     modifier: Modifier = Modifier
-) {
+) : Int {
     var toGame by remember { mutableStateOf( false ) }
 
     Column(
@@ -172,6 +185,10 @@ fun Reveal(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(100.dp))
+        Text(
+            text = stringResource(R.string.reveal_rules),
+            modifier = Modifier.padding(20.dp)
+        )
         Image(
             painter = painterResource(R.drawable.placeholder),
             contentDescription = stringResource(R.string.image)
@@ -189,8 +206,9 @@ fun Reveal(
     }
 
     if (toGame) {
-        onPlayAgainButtonClicked()
+        return 1
     }
+    return 4
 }
 
 @Preview(showBackground = true)
@@ -213,9 +231,7 @@ fun DrawPreview() {
 @Composable
 fun TimesUpPreview() {
     SketchyRecallTheme {
-        TimesUp(
-            {}
-        )
+        timesUp()
     }
 }
 
@@ -223,8 +239,6 @@ fun TimesUpPreview() {
 @Composable
 fun RevealUpPreview() {
     SketchyRecallTheme {
-        Reveal(
-            {}
-        )
+        reveal()
     }
 }
