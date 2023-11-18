@@ -2,6 +2,8 @@ package com.example.sketchyrecall
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
@@ -68,6 +70,30 @@ class UITests {
         composeTestRule.onNodeWithContentDescription(backText)
             .performClick()
         navController.assertCurrentRouteName(SketchyRecallScreen.Landing.name)
+    }
+
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun timer_studyTimeStarted_showsStudy() {
+        navigateToGameScreen()
+        val studyText = composeTestRule.activity.getString(R.string.study_rules)
+        composeTestRule.waitUntilExactlyOneExists(hasText(studyText), 3000)
+    }
+
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun timer_studyTimeOut_showsDraw() {
+        navigateToGameScreen()
+        val drawText = composeTestRule.activity.getString(R.string.draw_rules)
+        composeTestRule.waitUntilExactlyOneExists(hasText(drawText), 4000)
+    }
+
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun timer_drawTimeOut_showsTimesUp() {
+        navigateToGameScreen()
+        val timesUpText = composeTestRule.activity.getString(R.string.times_up_rules)
+        composeTestRule.waitUntilExactlyOneExists(hasText(timesUpText), 9000)
     }
 
     private fun navigateToRulesScreen() {

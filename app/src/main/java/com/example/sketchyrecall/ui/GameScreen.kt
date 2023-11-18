@@ -33,6 +33,8 @@ const val drawTime = 5
 fun GameStart(
     modifier: Modifier = Modifier
 ) {
+    Log.d("TAG", "gamestart func")
+
     var phase by remember { mutableIntStateOf(1) }
     when (phase) {
         1 -> phase = study()
@@ -44,6 +46,8 @@ fun GameStart(
 
 @Composable
 fun study() : Int {
+    Log.d("TAG", "study func")
+
     var timerText by remember { mutableStateOf("$studyTime seconds left")}
     var timeRemaining by remember { mutableIntStateOf( studyTime ) }
     timeRemaining = customTimer(studyTime)
@@ -59,6 +63,7 @@ fun study() : Int {
 
 @Composable
 fun draw() : Int {
+    Log.d("TAG", "draw func")
     var timerText by remember { mutableStateOf("$drawTime seconds left")}
     var timeRemaining by remember { mutableIntStateOf( drawTime ) }
     timeRemaining = customTimer(drawTime)
@@ -96,6 +101,8 @@ fun timerText(timeRemaining: Int) : String {
 
 @Composable
 fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
+    Log.d("TAG", "study SCREEN func")
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -119,6 +126,8 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
+    Log.d("TAG", "draw SCREEN func")
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -142,6 +151,8 @@ fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
 fun timesUp(
     modifier: Modifier = Modifier
 ) : Int {
+    Log.d("TAG", "times up func")
+
     var toReveal by remember { mutableStateOf( false ) }
 
     Column(
@@ -177,6 +188,8 @@ fun timesUp(
 fun reveal(
     modifier: Modifier = Modifier
 ) : Int {
+    Log.d("TAG", "reveal func")
+
     var toGame by remember { mutableStateOf( false ) }
 
     Column(
