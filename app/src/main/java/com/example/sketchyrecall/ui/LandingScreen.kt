@@ -45,7 +45,7 @@ fun LandingScreen(
             }
         ) {
             Text(
-                text = stringResource(R.string.rules),
+                text = stringResource(R.string.rules_button),
                 fontSize = 24.sp
             )
         }

@@ -31,19 +31,23 @@ const val drawTime = 5
 
 @Composable
 fun GameStart(
-    onTimesUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    Log.d("TAG", "gamestart func")
+
     var phase by remember { mutableIntStateOf(1) }
     when (phase) {
         1 -> phase = study()
         2 -> phase = draw()
-        3 -> onTimesUp()
+        3 -> phase = timesUp()
+        4 -> phase = reveal()
     }
 }
 
 @Composable
 fun study() : Int {
+    Log.d("TAG", "study func")
+
     var timerText by remember { mutableStateOf("$studyTime seconds left")}
     var timeRemaining by remember { mutableIntStateOf( studyTime ) }
     timeRemaining = customTimer(studyTime)
@@ -59,6 +63,7 @@ fun study() : Int {
 
 @Composable
 fun draw() : Int {
+    Log.d("TAG", "draw func")
     var timerText by remember { mutableStateOf("$drawTime seconds left")}
     var timeRemaining by remember { mutableIntStateOf( drawTime ) }
     timeRemaining = customTimer(drawTime)
@@ -96,12 +101,18 @@ fun timerText(timeRemaining: Int) : String {
 
 @Composable
 fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
+    Log.d("TAG", "study SCREEN func")
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(100.dp))
+        Text(
+            text = stringResource(R.string.study_rules),
+            modifier = Modifier.padding(20.dp)
+        )
         Image(
             painter = painterResource(R.drawable.placeholder),
             contentDescription = stringResource(R.string.image)
@@ -115,11 +126,18 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
+    Log.d("TAG", "draw SCREEN func")
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(100.dp))
+        Text(
+            text = stringResource(R.string.draw_rules),
+            modifier = Modifier.padding(20.dp)
+        )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = timerText,
@@ -130,10 +148,11 @@ fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TimesUp(
-    onRevealButtonClicked: () -> Unit,
+fun timesUp(
     modifier: Modifier = Modifier
-) {
+) : Int {
+    Log.d("TAG", "times up func")
+
     var toReveal by remember { mutableStateOf( false ) }
 
     Column(
@@ -141,6 +160,11 @@ fun TimesUp(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(100.dp))
+        Text(
+            text = stringResource(R.string.times_up_rules),
+            modifier = Modifier.padding(20.dp)
+        )
         Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
@@ -155,15 +179,17 @@ fun TimesUp(
     }
 
     if (toReveal) {
-        onRevealButtonClicked()
+        return 4
     }
+    return 3
 }
 
 @Composable
-fun Reveal(
-    onPlayAgainButtonClicked: () -> Unit,
+fun reveal(
     modifier: Modifier = Modifier
-) {
+) : Int {
+    Log.d("TAG", "reveal func")
+
     var toGame by remember { mutableStateOf( false ) }
 
     Column(
@@ -172,6 +198,10 @@ fun Reveal(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(100.dp))
+        Text(
+            text = stringResource(R.string.reveal_rules),
+            modifier = Modifier.padding(20.dp)
+        )
         Image(
             painter = painterResource(R.drawable.placeholder),
             contentDescription = stringResource(R.string.image)
@@ -189,8 +219,9 @@ fun Reveal(
     }
 
     if (toGame) {
-        onPlayAgainButtonClicked()
+        return 1
     }
+    return 4
 }
 
 @Preview(showBackground = true)
@@ -213,9 +244,7 @@ fun DrawPreview() {
 @Composable
 fun TimesUpPreview() {
     SketchyRecallTheme {
-        TimesUp(
-            {}
-        )
+        timesUp()
     }
 }
 
@@ -223,8 +252,6 @@ fun TimesUpPreview() {
 @Composable
 fun RevealUpPreview() {
     SketchyRecallTheme {
-        Reveal(
-            {}
-        )
+        reveal()
     }
 }

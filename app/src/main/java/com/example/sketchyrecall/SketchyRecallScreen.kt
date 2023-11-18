@@ -15,9 +15,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,9 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.sketchyrecall.ui.GameStart
 import com.example.sketchyrecall.ui.LandingScreen
-import com.example.sketchyrecall.ui.Reveal
 import com.example.sketchyrecall.ui.RulesScreen
-import com.example.sketchyrecall.ui.TimesUp
 
 enum class SketchyRecallScreen(@StringRes val title: Int) {
     Landing(title = R.string.app_name),
@@ -82,16 +77,15 @@ fun SketchyRecallApp(
             SketchyRecallAppBar(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigate(SketchyRecallScreen.Landing.name) }
             )
         }
-    ) { innerPadding ->
-        Modifier
-            .padding(innerPadding)
+    ) { innerPadding -> Modifier.padding(innerPadding)
         NavHost(
             navController = navController,
             startDestination = SketchyRecallScreen.Landing.name
         ) {
+//          Routes FROM Landing
             composable(route = SketchyRecallScreen.Landing.name) {
                 LandingScreen(
                     onRulesButtonClicked = {
@@ -104,39 +98,20 @@ fun SketchyRecallApp(
                         .fillMaxSize()
                 )
             }
+//          Routes FROM Rules
             composable(route = SketchyRecallScreen.Rules.name) {
                 RulesScreen(
                     modifier = Modifier
                         .fillMaxSize()
                 )
             }
+//          Routes FROM Game
             composable(route = SketchyRecallScreen.Game.name) {
-                var callTimesUp by remember { mutableStateOf( false ) }
-                var callReveal by remember { mutableStateOf( false ) }
                 GameStart(
-                    onTimesUp = {
-                        callTimesUp = true
-                    },
                     modifier = Modifier
                         .fillMaxSize()
 
                 )
-
-                if (callTimesUp) {
-                    TimesUp(
-                        onRevealButtonClicked = {
-                            callReveal = true
-                        }
-                    )
-                }
-
-                if (callReveal) {
-                    Reveal(
-                        onPlayAgainButtonClicked = {
-                            navController.navigate(SketchyRecallScreen.Game.name)
-                        }
-                    )
-                }
             }
         }
 
