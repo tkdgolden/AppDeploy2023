@@ -15,4 +15,5 @@
     <string name="times_up">Time\'s Up!</string>
     <string name="back_button">return to homepage</string>
     <string name="game">SketchyRecall</string>
+    <string name="rules_button">Rules</string>
 </resources>

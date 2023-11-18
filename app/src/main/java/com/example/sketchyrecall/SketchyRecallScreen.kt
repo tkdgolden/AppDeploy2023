@@ -85,13 +85,12 @@ fun SketchyRecallApp(
                 navigateUp = { navController.navigateUp() }
             )
         }
-    ) { innerPadding ->
-        Modifier
-            .padding(innerPadding)
+    ) { innerPadding -> Modifier.padding(innerPadding)
         NavHost(
             navController = navController,
             startDestination = SketchyRecallScreen.Landing.name
         ) {
+//          Routes FROM Landing
             composable(route = SketchyRecallScreen.Landing.name) {
                 LandingScreen(
                     onRulesButtonClicked = {
@@ -104,12 +103,14 @@ fun SketchyRecallApp(
                         .fillMaxSize()
                 )
             }
+//          Routes FROM Rules
             composable(route = SketchyRecallScreen.Rules.name) {
                 RulesScreen(
                     modifier = Modifier
                         .fillMaxSize()
                 )
             }
+//          Routes FROM Game
             composable(route = SketchyRecallScreen.Game.name) {
                 var callTimesUp by remember { mutableStateOf( false ) }
                 var callReveal by remember { mutableStateOf( false ) }
