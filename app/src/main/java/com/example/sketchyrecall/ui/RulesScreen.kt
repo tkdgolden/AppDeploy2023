@@ -13,8 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.SketchyRecallTheme
 import com.example.sketchyrecall.R
-import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
 
 @Composable
 fun RulesScreen(
