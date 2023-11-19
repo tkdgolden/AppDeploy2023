@@ -61,6 +61,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.5")
     implementation ("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.5.2")
     testImplementation("junit:junit:4.13.2")
 
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.05.01"))
