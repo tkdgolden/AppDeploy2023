@@ -25,6 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sketchyrecall.R
 import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
 
 const val studyTime = 3
 const val drawTime = 5
@@ -33,6 +40,32 @@ const val drawTime = 5
 fun GameStart(
     modifier: Modifier = Modifier
 ) {
+
+    val client = OkHttpClient()
+    val request = Request.Builder()
+        .header("X-Dezgo-Key", "DEZGO-E29CC2E400C0FE386D576F7F5BB453D7DDF406B5EB1064F99C9369BAD18832C7960EB909")
+        .post(
+            MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("prompt", "coloring book page colorful colored dog monster teeth")
+                .build()
+        )
+        .build();
+
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            println("Got error $e")
+        }
+        // response currently prints the raw data of the image, so we need to convert it
+        override fun onResponse(call: Call, response: Response) {
+            println("Got response ${response.body?.byteStream()}")
+
+        }
+    })
+
+
+
+
     Log.d("TAG", "gamestart func")
 
     var phase by remember { mutableIntStateOf(1) }
