@@ -229,7 +229,8 @@ fun StudyScreen(timerText: String, imageState: Painter, modifier: Modifier = Mod
         )
         AsyncImage(
             model = "https://us-central1-booksearch-325400.cloudfunctions.net/image",
-            contentDescription = "game image from dezgo"
+            contentDescription = "Game image from dezgo",
+            onError = { err -> println("Got Error $err") }
         )
 //        Image(
 //            // painter = imageState,
