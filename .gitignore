@@ -12,4 +12,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-apikey.properties
+.gradle
+/gradle
