@@ -49,6 +49,7 @@ const val studyTime = 10
 const val drawTime = 5
 var imageApi = "https://us-central1-booksearch-325400.cloudfunctions.net/image?params=83947134"
 
+
 @Composable
 fun GameStart(
     modifier: Modifier = Modifier
@@ -136,7 +137,11 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(20.dp)
         )
         AsyncImage(
+<<<<<<< HEAD
             model = imageApi,
+=======
+            model = "https://us-central1-booksearch-325400.cloudfunctions.net/image?params=83947134",
+>>>>>>> 827a90bd52fefbf86d44764b87d56b9d726d59e0
             contentDescription = "Game image from dezgo",
             onError = { err -> println("Got Error $err") }
         )
