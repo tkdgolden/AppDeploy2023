@@ -33,6 +33,8 @@ import coil.request.ImageRequest
 import com.example.compose.SketchyRecallTheme
 import com.example.compose.md_theme_light_primary
 import com.example.sketchyrecall.R
+import com.example.sketchyrecall.helpers.generatePrompt
+import java.util.Random
 
 import java.util.Timer
 import kotlin.concurrent.timerTask
@@ -123,9 +125,11 @@ fun timerText(timeRemaining: Int) : String {
 
 @Composable
 fun GetImage() {
+    val prompt = generatePrompt()
+    println("THIS IS PROMPT $prompt")
     newImage = AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data("https://function-1-acq2u7idfa-uc.a.run.app")
+            .data("https://us-central1-booksearch-325400.cloudfunctions.net/image?prompt=${prompt}")
             .memoryCachePolicy(
                 CachePolicy.DISABLED)
             .build(),
