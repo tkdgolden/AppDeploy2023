@@ -50,6 +50,13 @@ android {
 }
 
 dependencies {
+    implementation("io.ktor:ktor-client-apache:1.6.3")
+    implementation("io.ktor:ktor-client-logging:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+
+
+
+
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("androidx.core:core-ktx:1.12.0")
