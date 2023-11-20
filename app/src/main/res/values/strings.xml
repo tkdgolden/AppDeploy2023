@@ -22,4 +22,6 @@
     <string name="draw_rules">You have 2.5 minutes to describe the image to the drawers, while they draw.</string>
     <string name="times_up_rules">After the Describer has marked their choice, Click the button below.</string>
     <string name="reveal_rules">"Drawers look at the image and vote for which drawing is most accurate.  "</string>
+    <string name="waiting">Please wait for an image to load...</string>
+    <string name="welcome">Welcome to Sketchy Recall!</string>
 </resources>

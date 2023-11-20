@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,8 +26,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.SketchyRecallTheme
+import com.example.compose.md_theme_light_primary
 import com.example.sketchyrecall.R
-import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
+import java.util.Timer
+import kotlin.concurrent.timerTask
 
 const val studyTime = 3
 const val drawTime = 5
@@ -117,6 +123,14 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
             painter = painterResource(R.drawable.placeholder),
             contentDescription = stringResource(R.string.image)
         )
+        Icon(
+            painter = painterResource(R.drawable.timer),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .padding(20.dp)
+                .size(40.dp)
+        )
         Text(
             modifier = Modifier.padding(20.dp),
             text = timerText
@@ -139,6 +153,14 @@ fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(20.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
+        Icon(
+            painter = painterResource(R.drawable.timer),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .padding(20.dp)
+                .size(200.dp)
+        )
         Text(
             text = timerText,
             fontSize = 40.sp
@@ -191,6 +213,11 @@ fun reveal(
     Log.d("TAG", "reveal func")
 
     var toGame by remember { mutableStateOf( false ) }
+    var ready by remember { mutableStateOf( false ) }
+
+    Timer().schedule(timerTask {
+        ready = true
+    }, pretendAPIWait)
 
     Column(
         modifier = Modifier
@@ -206,14 +233,28 @@ fun reveal(
             painter = painterResource(R.drawable.placeholder),
             contentDescription = stringResource(R.string.image)
         )
-        Button(
-            modifier = Modifier.padding(20.dp),
-            onClick = {
-                toGame = true
+        if (ready) {
+            Button(
+                modifier = Modifier.padding(20.dp),
+                onClick = {
+                    toGame = true
+                }
+            ) {
+                Text(
+                    text = stringResource(R.string.again),
+                )
             }
-        ) {
+        } else {
+            Icon(
+                painter = painterResource(R.drawable.loading),
+                contentDescription = null,
+                tint = md_theme_light_primary,
+                modifier = Modifier
+                    .padding(20.dp)
+                    .size(40.dp)
+            )
             Text(
-                text = stringResource(R.string.again),
+                text = stringResource(R.string.waiting),
             )
         }
     }
