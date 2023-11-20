@@ -2,7 +2,6 @@ package com.example.sketchyrecall.ui
 
 import android.os.CountDownTimer
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,138 +17,40 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sketchyrecall.R
-import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
-import coil.ImageLoader
 import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import coil.util.DebugLogger
-import java.util.logging.Logger
+import com.example.sketchyrecall.R
+import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
 
 
 const val studyTime = 10
 const val drawTime = 5
+var newImage = Unit
+
 
 @Composable
 fun GameStart(
     modifier: Modifier = Modifier
 ) {
-    val client = OkHttpClient()
-    val request = Request.Builder()
-        .url("https://api.dezgo.com/text2image")
-        .header("X-Dezgo-Key", "DEZGO-E29CC2E400C0FE386D576F7F5BB453D7DDF406B5EB1064F99C9369BAD18832C7960EB909")
-        .post(
-            MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("prompt", "coloring book page colorful colored dog monster teeth")
-                .build()
-        )
-        .build();
-
-    println("WTF")
-    val model = ImageLoader.Builder(LocalContext.current)
-        .okHttpClient {
-            OkHttpClient.Builder()
-                .addInterceptor { chain ->
-                    println("CALLING API??")
-                    val chainedRequest = chain.request().newBuilder()
-                        .url("https://api.dezgo.com/text2image")
-                        .header(
-                            "X-Dezgo-Key",
-                            "DEZGO-E29CC2E400C0FE386D576F7F5BB453D7DDF406B5EB1064F99C9369BAD18832C7960EB909"
-                        )
-                        .post(
-                            MultipartBody.Builder()
-                                .setType(MultipartBody.FORM)
-                                .addFormDataPart(
-                                    "prompt",
-                                    "coloring book page colorful colored dog monster teeth"
-                                )
-                                .build()
-                        )
-                        .build();
-                    chain.proceed(chainedRequest)
-                }
-  .build()
-        }
-        .memoryCachePolicy(CachePolicy.ENABLED)
-        .logger(DebugLogger())
-        .error(R.drawable.placeholder)
-        .build()
-
-        model.enqueue(ImageRequest.Builder(LocalContext.current)
-            .data("https://api.dezgo.com/text2image")
-            .target(
-                onStart = { placeholder ->
-                    // Handle the placeholder drawable.
-                    println("STARTING TO LOAD")
-                },
-                onSuccess = { result ->
-                    // Handle the successful result.
-                    println("SUCCESS")
-                },
-                onError = { error ->
-                    // Handle the error drawable.
-                    println("ERROR $error")
-                }
-            )            .build())
-
-        var painter = rememberAsyncImagePainter(
-            model = model
-        )
-
-    println(painter.state)
-    val state = painter.state
-    if (state is AsyncImagePainter.State.Error) {
-        println(state.result)
-    }
-    println(painter.request.toString())
-
-        var imageState by remember { mutableStateOf(painter)}
-//
-//    client.newCall(request).enqueue(object : Callback {
-//        override fun onFailure(call: Call, e: IOException) {
-//            println("Got error $e")
-//        }
-//        // response currently prints the raw data of the image, so we need to convert it
-//        override fun onResponse(call: Call, response: Response) {
-//            println("Got response ${response.body?.byteStream()}")
-//            val imageUri = response.body?.byteStream()
-//            if (imageUri != null) {
-//                // Set the image URI using rememberImagePainter
-//                imageState = rememberAsyncImagePainter(imageUri)
-//            }
-//
-//
-//
-//        }
-//    })
-
-
-
-
     Log.d("TAG", "gamestart func")
-
     var phase by remember { mutableIntStateOf(1) }
+
+    var hasImage by remember { mutableStateOf( false )}
+    if (!hasImage) {
+        GetImage()
+        hasImage = true
+    }
+    if (phase == 4) {
+        hasImage = false
+    }
     when (phase) {
-        1 -> phase = study(imageState)
+        1 -> phase = study()
         2 -> phase = draw()
         3 -> phase = timesUp()
         4 -> phase = reveal()
@@ -157,19 +58,18 @@ fun GameStart(
 }
 
 @Composable
-fun study(imageState: Painter) : Int {
+fun study() : Int {
     Log.d("TAG", "study func")
-
     var timerText by remember { mutableStateOf("$studyTime seconds left")}
     var timeRemaining by remember { mutableIntStateOf( studyTime ) }
     timeRemaining = customTimer(studyTime)
     timerText = timerText(timeRemaining)
 
-    return if (timeRemaining == 0) {
-        2
+    if (timeRemaining == 0) {
+        return 2
     } else {
-        StudyScreen(timerText, imageState)
-        1
+        StudyScreen(timerText)
+        return 1
     }
 }
 
@@ -212,10 +112,26 @@ fun timerText(timeRemaining: Int) : String {
 }
 
 @Composable
-fun StudyScreen(timerText: String, imageState: Painter, modifier: Modifier = Modifier) {
-    Log.d("TAG", "study SCREEN func")
+fun GetImage() {
+    newImage = AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data("https://function-1-acq2u7idfa-uc.a.run.app")
+            .memoryCachePolicy(
+                CachePolicy.DISABLED)
+            .build(),
+        contentDescription = "Game image from dezgo",
+        onError = { err -> println("Got Error $err") }
+    )
+}
 
-    println(imageState)
+@Composable
+fun ReturnImage() {
+    return newImage
+}
+
+@Composable
+fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
+    Log.d("TAG", "study SCREEN func")
 
     Column(
         modifier = Modifier
@@ -227,16 +143,7 @@ fun StudyScreen(timerText: String, imageState: Painter, modifier: Modifier = Mod
             text = stringResource(R.string.study_rules),
             modifier = Modifier.padding(20.dp)
         )
-        AsyncImage(
-            model = "https://us-central1-booksearch-325400.cloudfunctions.net/image",
-            contentDescription = "Game image from dezgo",
-            onError = { err -> println("Got Error $err") }
-        )
-//        Image(
-//            // painter = imageState,
-//            painter = remem "https://us-central1-booksearch-325400.cloudfunctions.net/image",
-//            contentDescription = stringResource(R.string.image)
-//        )
+        ReturnImage()
         Text(
             modifier = Modifier.padding(20.dp),
             text = timerText
@@ -247,7 +154,6 @@ fun StudyScreen(timerText: String, imageState: Painter, modifier: Modifier = Mod
 @Composable
 fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
     Log.d("TAG", "draw SCREEN func")
-
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -322,10 +228,7 @@ fun reveal(
             text = stringResource(R.string.reveal_rules),
             modifier = Modifier.padding(20.dp)
         )
-        Image(
-            painter = painterResource(R.drawable.placeholder),
-            contentDescription = stringResource(R.string.image)
-        )
+        ReturnImage()
         Button(
             modifier = Modifier.padding(20.dp),
             onClick = {
@@ -347,37 +250,8 @@ fun reveal(
 @Preview(showBackground = true)
 @Composable
 fun StudyPreview() {
-    val model = ImageLoader.Builder(LocalContext.current)
-        .okHttpClient {
-            OkHttpClient.Builder()
-                .addInterceptor { chain ->
-                    val chainedRequest = chain.request().newBuilder()
-                        .url("https://api.dezgo.com/text2image")
-                        .header(
-                            "X-Dezgo-Key",
-                            "DEZGO-E29CC2E400C0FE386D576F7F5BB453D7DDF406B5EB1064F99C9369BAD18832C7960EB909"
-                        )
-                        .post(
-                            MultipartBody.Builder()
-                                .setType(MultipartBody.FORM)
-                                .addFormDataPart(
-                                    "prompt",
-                                    "coloring book page colorful colored dog monster teeth"
-                                )
-                                .build()
-                        )
-                        .build();
-                    chain.proceed(chainedRequest)
-                }
-                .build()
-        }
-
-    val painter = rememberAsyncImagePainter(
-        model = model
-    )
-
     SketchyRecallTheme {
-        study(painter)
+        study()
     }
 }
 
