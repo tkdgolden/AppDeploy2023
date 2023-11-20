@@ -1,8 +1,6 @@
 package com.example.sketchyrecall.ui
 
-
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,7 +37,6 @@ import com.example.compose.md_theme_light_onPrimaryContainer
 import com.example.sketchyrecall.R
 import com.example.sketchyrecall.helpers.generatePrompt
 
-
 const val studyTime = 50
 const val drawTime = 150
 
@@ -64,7 +61,6 @@ fun GameStart(
             ) {}
         }
     }
-        Log.d("TAG", "gamestart func")
         when (phase) {
             1 -> phase = study()
             2 -> phase = draw()
@@ -76,7 +72,6 @@ fun GameStart(
 
 @Composable
 fun study() : Int {
-    Log.d("TAG", "study func")
     var timerText by remember { mutableStateOf("$studyTime seconds left")}
     var timeRemaining by remember { mutableIntStateOf( studyTime ) }
     timeRemaining = customTimer(studyTime)
@@ -92,7 +87,6 @@ fun study() : Int {
 
 @Composable
 fun draw() : Int {
-    Log.d("TAG", "draw func")
     var timerText by remember { mutableStateOf("$drawTime seconds left")}
     var timeRemaining by remember { mutableIntStateOf( drawTime ) }
     timeRemaining = customTimer(drawTime)
@@ -108,7 +102,6 @@ fun draw() : Int {
 
 @Composable
 fun customTimer(totalTime: Int) : Int {
-    Log.d("TAG", "in custom timer")
     var timeRemaining by remember { mutableStateOf(totalTime) }
     val timer = object : CountDownTimer(((totalTime * 1000).toLong()), 1000) {
         override fun onTick(millisUntilFinished: Long) {
@@ -146,8 +139,6 @@ fun GetImage() {
 
 @Composable
 fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
-    Log.d("TAG", "study SCREEN func")
-
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -180,7 +171,6 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
-    Log.d("TAG", "draw SCREEN func")
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -214,7 +204,6 @@ fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
 fun timesUp(
     modifier: Modifier = Modifier
 ) : Int {
-    Log.d("TAG", "times up func")
 
     var toReveal by remember { mutableStateOf( false ) }
 
@@ -231,7 +220,6 @@ fun timesUp(
         Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
-                println("CLICK")
                 toReveal = true
             }
         ) {
@@ -242,10 +230,8 @@ fun timesUp(
         Spacer(modifier = Modifier.weight(1f))
     }
     if (toReveal) {
-        println("4")
         return 4
     } else {
-        println("3")
         return 3
     }
 }
@@ -255,7 +241,6 @@ fun reveal(
     onPlayAgainButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) : Int {
-    Log.d("TAG", "reveal func")
     Column(
         modifier = Modifier
             .fillMaxWidth(),
