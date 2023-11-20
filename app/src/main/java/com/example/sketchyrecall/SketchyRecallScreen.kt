@@ -110,7 +110,6 @@ fun SketchyRecallApp(
                 GameStart(
                     modifier = Modifier
                         .fillMaxSize()
-
                 )
             }
         }

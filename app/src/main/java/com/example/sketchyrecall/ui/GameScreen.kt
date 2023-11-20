@@ -1,8 +1,8 @@
 package com.example.sketchyrecall.ui
 
+
 import android.os.CountDownTimer
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,27 +21,44 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.example.compose.SketchyRecallTheme
 import com.example.compose.md_theme_light_primary
 import com.example.sketchyrecall.R
+
 import java.util.Timer
 import kotlin.concurrent.timerTask
 
-const val studyTime = 3
+
+const val studyTime = 10
 const val drawTime = 5
+
+var newImage = Unit
+
 
 @Composable
 fun GameStart(
     modifier: Modifier = Modifier
 ) {
     Log.d("TAG", "gamestart func")
-
     var phase by remember { mutableIntStateOf(1) }
+
+    var hasImage by remember { mutableStateOf( false )}
+    if (!hasImage) {
+        GetImage()
+        hasImage = true
+    }
+    if (phase == 4) {
+        hasImage = false
+    }
     when (phase) {
         1 -> phase = study()
         2 -> phase = draw()
@@ -53,17 +70,16 @@ fun GameStart(
 @Composable
 fun study() : Int {
     Log.d("TAG", "study func")
-
     var timerText by remember { mutableStateOf("$studyTime seconds left")}
     var timeRemaining by remember { mutableIntStateOf( studyTime ) }
     timeRemaining = customTimer(studyTime)
     timerText = timerText(timeRemaining)
 
-    return if (timeRemaining == 0) {
-        2
+    if (timeRemaining == 0) {
+        return 2
     } else {
         StudyScreen(timerText)
-        1
+        return 1
     }
 }
 
@@ -106,6 +122,24 @@ fun timerText(timeRemaining: Int) : String {
 }
 
 @Composable
+fun GetImage() {
+    newImage = AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data("https://function-1-acq2u7idfa-uc.a.run.app")
+            .memoryCachePolicy(
+                CachePolicy.DISABLED)
+            .build(),
+        contentDescription = "Game image from dezgo",
+        onError = { err -> println("Got Error $err") }
+    )
+}
+
+@Composable
+fun ReturnImage() {
+    return newImage
+}
+
+@Composable
 fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
     Log.d("TAG", "study SCREEN func")
 
@@ -119,9 +153,14 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
             text = stringResource(R.string.study_rules),
             modifier = Modifier.padding(20.dp)
         )
-        Image(
-            painter = painterResource(R.drawable.placeholder),
-            contentDescription = stringResource(R.string.image)
+        ReturnImage()
+        Icon(
+            painter = painterResource(R.drawable.timer),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .padding(20.dp)
+                .size(40.dp)
         )
         Icon(
             painter = painterResource(R.drawable.timer),
@@ -141,7 +180,6 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
 @Composable
 fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
     Log.d("TAG", "draw SCREEN func")
-
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -229,10 +267,9 @@ fun reveal(
             text = stringResource(R.string.reveal_rules),
             modifier = Modifier.padding(20.dp)
         )
-        Image(
-            painter = painterResource(R.drawable.placeholder),
-            contentDescription = stringResource(R.string.image)
-        )
+
+        ReturnImage()
+
         if (ready) {
             Button(
                 modifier = Modifier.padding(20.dp),
