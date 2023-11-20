@@ -1,5 +1,6 @@
 package com.example.sketchyrecall.ui
 
+
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
 
 const val studyTime = 10
 const val drawTime = 5
+
 var newImage = Unit
 
 
@@ -228,7 +230,9 @@ fun reveal(
             text = stringResource(R.string.reveal_rules),
             modifier = Modifier.padding(20.dp)
         )
+
         ReturnImage()
+
         Button(
             modifier = Modifier.padding(20.dp),
             onClick = {
