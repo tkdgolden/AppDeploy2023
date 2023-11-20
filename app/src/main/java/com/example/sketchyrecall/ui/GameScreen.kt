@@ -33,7 +33,7 @@ import coil.request.ImageRequest
 import com.example.compose.SketchyRecallTheme
 import com.example.compose.md_theme_light_primary
 import com.example.sketchyrecall.R
-import com.example.sketchyrecall.ui.theme.SketchyRecallTheme
+
 import java.util.Timer
 import kotlin.concurrent.timerTask
 
@@ -154,6 +154,14 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(20.dp)
         )
         ReturnImage()
+        Icon(
+            painter = painterResource(R.drawable.timer),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .padding(20.dp)
+                .size(40.dp)
+        )
         Icon(
             painter = painterResource(R.drawable.timer),
             contentDescription = null,
