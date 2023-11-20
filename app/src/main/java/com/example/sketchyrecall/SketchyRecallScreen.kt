@@ -109,7 +109,10 @@ fun SketchyRecallApp(
             composable(route = SketchyRecallScreen.Game.name) {
                 GameStart(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    onPlayAgainButtonClicked = {
+                        navController.navigate(SketchyRecallScreen.Landing.name)
+                    }
                 )
             }
         }

@@ -3,12 +3,16 @@ package com.example.sketchyrecall.ui
 
 import android.os.CountDownTimer
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,42 +35,43 @@ import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.compose.SketchyRecallTheme
-import com.example.compose.md_theme_light_primary
+import com.example.compose.md_theme_light_onPrimaryContainer
 import com.example.sketchyrecall.R
 
-import java.util.Timer
-import kotlin.concurrent.timerTask
 
-
-const val studyTime = 60
+const val studyTime = 10
 const val drawTime = 5
-
-var newImage = Unit
-
 
 @Composable
 fun GameStart(
-    modifier: Modifier = Modifier
+    onPlayAgainButtonClicked : () -> Unit,
+    modifier: Modifier = Modifier,
+    alignment: Alignment = Alignment.Center
 ) {
-    Log.d("TAG", "gamestart func")
-    var phase by remember { mutableIntStateOf(1) }
-
-    var hasImage by remember { mutableStateOf( false )}
-    if (!hasImage) {
-        println("GET IMAGE $phase")
+    var phase by remember { mutableStateOf( 1 ) }
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxSize(),
+        contentAlignment = alignment
+    ) {
         GetImage()
-        hasImage = true
+        if ((phase == 2) or (phase == 3)) {
+            Box(
+               modifier = modifier
+                   .background(md_theme_light_onPrimaryContainer)
+            ) {}
+        }
     }
-    if (phase == 4) {
-        hasImage = false
+        Log.d("TAG", "gamestart func")
+        when (phase) {
+            1 -> phase = study()
+            2 -> phase = draw()
+            3 -> phase = timesUp()
+            4 -> phase = reveal(onPlayAgainButtonClicked)
+        }
     }
-    when (phase) {
-        1 -> phase = study()
-        2 -> phase = draw()
-        3 -> phase = timesUp()
-        4 -> phase = reveal()
-    }
-}
+//}
 
 @Composable
 fun study() : Int {
@@ -125,23 +130,17 @@ fun timerText(timeRemaining: Int) : String {
 @Composable
 fun GetImage() {
     println("IN GET IMAGE")
-    newImage = AsyncImage(
+    AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data("https://function-1-acq2u7idfa-uc.a.run.app")
             .memoryCachePolicy(
                 CachePolicy.DISABLED)
             .build(),
+        placeholder = painterResource(R.drawable.loading),
         contentDescription = "Game image from dezgo",
-        onError = { err -> println("Got Error $err") }
+        onError = { err -> println("Got Error $err") },
+        modifier = Modifier.height(500.dp).width(500.dp)
     )
-    println(newImage)
-}
-
-@Composable
-fun ReturnImage() {
-    println("IN RETURN IMAGE")
-    println(newImage)
-    return newImage
 }
 
 @Composable
@@ -153,34 +152,28 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         Text(
             text = stringResource(R.string.study_rules),
             modifier = Modifier.padding(20.dp)
         )
-        println("IN STUDY SCREEN")
-        println(ReturnImage())
-        ReturnImage()
-        Icon(
-            painter = painterResource(R.drawable.timer),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .padding(20.dp)
-                .size(40.dp)
-        )
-        Icon(
-            painter = painterResource(R.drawable.timer),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .padding(20.dp)
-                .size(40.dp)
-        )
-        Text(
-            modifier = Modifier.padding(20.dp),
-            text = timerText
-        )
+        Spacer(modifier = Modifier.height(400.dp))
+        Box(
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.timer),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(20.dp)
+                    .size(80.dp)
+            )
+            Text(
+                    modifier = Modifier.padding(20.dp),
+                    text = timerText
+            )
+        }
     }
 }
 
@@ -192,25 +185,27 @@ fun DrawScreen(timerText: String, modifier: Modifier = Modifier) {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         Text(
             text = stringResource(R.string.draw_rules),
             modifier = Modifier.padding(20.dp)
         )
-        Spacer(modifier = Modifier.weight(1f))
-        Icon(
-            painter = painterResource(R.drawable.timer),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .padding(20.dp)
-                .size(200.dp)
-        )
-        Text(
-            text = timerText,
-            fontSize = 40.sp
-        )
-        Spacer(modifier = Modifier.weight(1f))
+        Box(
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.timer),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(20.dp)
+                    .size(200.dp)
+            )
+            Text(
+                text = timerText,
+                fontSize = 40.sp
+            )
+        }
     }
 }
 
@@ -227,7 +222,7 @@ fun timesUp(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         Text(
             text = stringResource(R.string.times_up_rules),
             modifier = Modifier.padding(20.dp)
@@ -235,6 +230,7 @@ fun timesUp(
         Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
+                println("CLICK")
                 toReveal = true
             }
         ) {
@@ -244,67 +240,42 @@ fun timesUp(
         }
         Spacer(modifier = Modifier.weight(1f))
     }
-
     if (toReveal) {
+        println("4")
         return 4
+    } else {
+        println("3")
+        return 3
     }
-    return 3
 }
 
 @Composable
 fun reveal(
+    onPlayAgainButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) : Int {
     Log.d("TAG", "reveal func")
-
-    var toGame by remember { mutableStateOf( false ) }
-    var ready by remember { mutableStateOf( false ) }
-
-    Timer().schedule(timerTask {
-        ready = true
-    }, pretendAPIWait)
-
     Column(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         Text(
             text = stringResource(R.string.reveal_rules),
             modifier = Modifier.padding(20.dp)
         )
-
-        ReturnImage()
-
-        if (ready) {
-            Button(
-                modifier = Modifier.padding(20.dp),
-                onClick = {
-                    toGame = true
-                }
-            ) {
-                Text(
-                    text = stringResource(R.string.again),
-                )
+        Spacer(modifier = Modifier.height(400.dp))
+        Button(
+            modifier = Modifier.padding(20.dp),
+            onClick = {
+                onPlayAgainButtonClicked()
             }
-        } else {
-            Icon(
-                painter = painterResource(R.drawable.loading),
-                contentDescription = null,
-                tint = md_theme_light_primary,
-                modifier = Modifier
-                    .padding(20.dp)
-                    .size(40.dp)
-            )
+        ) {
             Text(
-                text = stringResource(R.string.waiting),
+                text = stringResource(R.string.again),
             )
         }
-    }
-
-    if (toGame) {
-        return 1
     }
     return 4
 }
@@ -337,6 +308,6 @@ fun TimesUpPreview() {
 @Composable
 fun RevealUpPreview() {
     SketchyRecallTheme {
-        reveal()
+//        reveal()
     }
 }
