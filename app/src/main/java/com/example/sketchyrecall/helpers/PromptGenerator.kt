@@ -24,5 +24,5 @@ fun generatePrompt():String{
         val animal = getRandomWord(animalWords)
         val part = getRandomWord(partWords)
         val adj = getRandomWord(adjWords)
-        return "coloring%20book%20page%20colorful%20colored%20${fantasy}%20${animal}%20${part}%20${adj}"
+        return "coloring%20book%20page,%20colorful,%20colored,%20${fantasy},%20${animal},%20${part},%20${adj}"
     }

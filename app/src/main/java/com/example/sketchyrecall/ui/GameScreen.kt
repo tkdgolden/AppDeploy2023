@@ -40,8 +40,8 @@ import com.example.sketchyrecall.R
 import com.example.sketchyrecall.helpers.generatePrompt
 
 
-const val studyTime = 10
-const val drawTime = 5
+const val studyTime = 50
+const val drawTime = 150
 
 @Composable
 fun GameStart(
@@ -133,7 +133,7 @@ fun GetImage() {
     val prompt = generatePrompt()
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data("https://us-central1-booksearch-325400.cloudfunctions.net/image?prompt=${prompt}")
+            .data("https://us-central1-supple-moon-405605.cloudfunctions.net/function-1?prompt=${prompt}")
             .memoryCachePolicy(
                 CachePolicy.DISABLED)
             .build(),
