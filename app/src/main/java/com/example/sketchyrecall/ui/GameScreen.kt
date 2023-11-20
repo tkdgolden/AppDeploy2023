@@ -40,7 +40,7 @@ import java.util.Timer
 import kotlin.concurrent.timerTask
 
 
-const val studyTime = 10
+const val studyTime = 60
 const val drawTime = 5
 
 var newImage = Unit
@@ -55,6 +55,7 @@ fun GameStart(
 
     var hasImage by remember { mutableStateOf( false )}
     if (!hasImage) {
+        println("GET IMAGE $phase")
         GetImage()
         hasImage = true
     }
@@ -136,10 +137,13 @@ fun GetImage() {
         contentDescription = "Game image from dezgo",
         onError = { err -> println("Got Error $err") }
     )
+    println(newImage)
 }
 
 @Composable
 fun ReturnImage() {
+    println("IN RETURN IMAGE")
+    println(newImage)
     return newImage
 }
 
@@ -157,6 +161,8 @@ fun StudyScreen(timerText: String, modifier: Modifier = Modifier) {
             text = stringResource(R.string.study_rules),
             modifier = Modifier.padding(20.dp)
         )
+        println("IN STUDY SCREEN")
+        println(ReturnImage())
         ReturnImage()
         Icon(
             painter = painterResource(R.drawable.timer),
