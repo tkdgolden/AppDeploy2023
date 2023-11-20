@@ -1,2 +1,4 @@
 /build
 apikey.properties
+.gradle
+/gradle

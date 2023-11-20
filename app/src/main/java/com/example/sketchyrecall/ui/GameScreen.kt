@@ -37,8 +37,11 @@ import coil.request.ImageRequest
 import com.example.compose.SketchyRecallTheme
 import com.example.compose.md_theme_light_onPrimaryContainer
 import com.example.sketchyrecall.R
+<<<<<<< HEAD
 import com.example.sketchyrecall.helpers.generatePrompt
 import java.util.Random
+=======
+>>>>>>> b1b447b61c35a85556f38524dbf857b078158272
 
 
 const val studyTime = 10
@@ -131,8 +134,12 @@ fun timerText(timeRemaining: Int) : String {
 
 @Composable
 fun GetImage() {
+<<<<<<< HEAD
     val prompt = generatePrompt()
     println("THIS IS PROMPT $prompt")
+=======
+    println("IN GET IMAGE")
+>>>>>>> b1b447b61c35a85556f38524dbf857b078158272
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data("https://us-central1-booksearch-325400.cloudfunctions.net/image?prompt=${prompt}")
